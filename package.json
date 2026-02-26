@@ -4,9 +4,21 @@
   "description": "A CLI tool for July",
   "author": "",
   "main": "index.js",
-  "bin": {
-    "create": "./cli.js"
+  "private": false,
+  "publishConfig": {
+    "access": "public"
   },
+  "bin": {
+    "create": "cli.js"
+  },
+  "files": [
+    "cli.js",
+    "src",
+    "package.json",
+    ".gitignore",
+    "README.md",
+    "README.zh-CN.md"
+  ],
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
