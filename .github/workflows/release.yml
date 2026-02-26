@@ -33,6 +33,9 @@ jobs:
           node-version: 24
           registry-url: https://registry.npmjs.org/
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Release it
         run: pnpm dlx release-it @release-it/conventional-changelog \
           --ci ${{ github.event.inputs.version_type }}
