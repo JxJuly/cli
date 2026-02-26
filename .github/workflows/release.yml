@@ -38,7 +38,7 @@ jobs:
 
       - name: Release it
         run: pnpm dlx release-it @release-it/conventional-changelog \
-          --ci ${{ github.event.inputs.version_type }}
+          --ci --npm.skipChecks ${{ github.event.inputs.version_type }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
