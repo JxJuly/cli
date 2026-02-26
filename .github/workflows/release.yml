@@ -1,0 +1,41 @@
+name: Release
+
+permissions:
+  contents: write
+  id-token: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version type (e.g. patch, minor, major, leave empty for auto)'
+        required: false
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+          - ''
+        default: ''
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org/
+
+      - name: Release it
+        run: pnpm dlx release-it @release-it/conventional-changelog \
+          --ci ${{ github.event.inputs.version_type }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
