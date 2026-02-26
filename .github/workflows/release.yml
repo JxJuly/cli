@@ -8,15 +8,15 @@ on:
   workflow_dispatch:
     inputs:
       version_type:
-        description: 'Version type (e.g. patch, minor, major, leave empty for auto)'
+        description: 'Version type (e.g. patch, minor, major, auto)'
         required: false
         type: choice
         options:
           - patch
           - minor
           - major
-          - ''
-        default: ''
+          - auto
+        default: auto
 
 jobs:
   release:
@@ -37,8 +37,14 @@ jobs:
         run: corepack enable
 
       - name: Release it
-        run: pnpm dlx release-it @release-it/conventional-changelog \
-          --ci --npm.skipChecks ${{ github.event.inputs.version_type }}
+        run: |
+          if [ "${{ github.event.inputs.version_type }}" = "auto" ]; then
+            pnpm dlx release-it @release-it/conventional-changelog --ci --npm.skipChecks
+          else
+            pnpm dlx release-it @release-it/conventional-changelog --ci  --npm.skipChecks\
+              --plugins.@release-it/conventional-changelog.ignoreRecommendedBump\
+              ${{ github.event.inputs.version_type }}
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
