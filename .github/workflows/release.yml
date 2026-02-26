@@ -33,11 +33,12 @@ jobs:
           node-version: 24
           registry-url: https://registry.npmjs.org/
 
-      - name: Enable Corepack
-        run: corepack enable
-
       - name: Install dependencies
-        run: pnpm add -g release-it @release-it/conventional-changelog
+        run: |
+          corepack enable
+          pnpm -v
+          pnpm setup
+          pnpm add -g release-it @release-it/conventional-changelog
 
       - name: Release it
         run: |
