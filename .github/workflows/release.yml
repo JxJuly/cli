@@ -41,12 +41,18 @@ jobs:
 
       - name: Release it
         run: |
+          echo "Version type: ${{ github.event.inputs.version_type }}"
           if [ "${{ github.event.inputs.version_type }}" = "auto" ]; then
-            release-it --ci --npm.skipChecks\
-              --plugins.@release-it/conventional-changelog
+            release-it \
+              --ci \
+              --npm.skipChecks \
+              --plugins.@release-it/conventional-changelog.preset=conventionalcommits
           else
-            release-it --ci  --npm.skipChecks\
-              --plugins.@release-it/conventional-changelog.ignoreRecommendedBump\
+            release-it \
+              --ci \
+              --npm.skipChecks \
+              --plugins.@release-it/conventional-changelog.preset=conventionalcommits \
+              --plugins.@release-it/conventional-changelog.ignoreRecommendedBump \
               ${{ github.event.inputs.version_type }}
           fi
         env:
