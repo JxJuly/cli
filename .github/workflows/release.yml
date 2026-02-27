@@ -52,12 +52,14 @@ jobs:
             release-it \
               --ci \
               --npm.skipChecks \
-              --plugins.@release-it/conventional-changelog.preset=conventionalcommits
+              --github.release \
+              --plugins.@release-it/conventional-changelog.preset.name=conventionalcommits
           else
             release-it \
               --ci \
               --npm.skipChecks \
-              --plugins.@release-it/conventional-changelog.preset=conventionalcommits \
+              --github.release \
+              --plugins.@release-it/conventional-changelog.preset.name=conventionalcommits \
               --plugins.@release-it/conventional-changelog.ignoreRecommendedBump \
               ${{ github.event.inputs.version_type }}
           fi
