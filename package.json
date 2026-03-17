@@ -20,7 +20,6 @@
     "cli.js",
     "src",
     "package.json",
-    ".gitignore",
     "README.md",
     "README.zh-CN.md"
   ],
