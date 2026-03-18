@@ -1,6 +1,8 @@
-import path from "path";
-import { Config } from "./types"
+import path from 'path';
+
 import fs from 'fs-extra';
+
+import type { Config } from '../../types';
 
 const gitIgnoreContent = `# Logs
 logs
@@ -146,8 +148,12 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
-`
+`;
 
 export const generateGitIgnore = async (config: Config) => {
-  await fs.writeFile(path.resolve(config.projectDir, '.gitignore'), gitIgnoreContent, 'utf-8');
-}
+  const filePath = path.resolve(config.projectDir, '.gitignore');
+  if (fs.existsSync(filePath)) {
+    return;
+  }
+  await fs.writeFile(filePath, gitIgnoreContent, 'utf-8');
+};

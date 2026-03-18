@@ -1,5 +1,37 @@
-import { input, select } from '@inquirer/prompts';
-import { UserInputs } from './types';
+import { input, select, checkbox } from '@inquirer/prompts';
+
+import { TemplateType, AdditionalFeatureType } from './types';
+
+import type { UserInputs } from './types';
+
+const templates = [
+  {
+    name: 'Node Library',
+    value: TemplateType.NodeLibrary,
+  },
+  {
+    name: 'React Component Library',
+    value: TemplateType.ReactComponentLibrary,
+  },
+];
+const additionalFeatures = [
+  {
+    name: 'ESLint config',
+    value: AdditionalFeatureType.ESLintConfig,
+  },
+  {
+    name: 'Github publish action',
+    value: AdditionalFeatureType.GithubPublishAction,
+  },
+  {
+    name: 'Git init',
+    value: AdditionalFeatureType.GitInit,
+  },
+  {
+    name: 'Vscode config',
+    value: AdditionalFeatureType.VscodeConfig,
+  },
+];
 
 export const getUserInput = async (): Promise<UserInputs> => {
   const folderName = await input({
@@ -16,21 +48,21 @@ export const getUserInput = async (): Promise<UserInputs> => {
 
   const template = await select({
     message: 'Select template:',
-    choices: [
-      {
-        name: 'Node Library',
-        value: 'node-library',
-      },
-      {
-        name: 'React Components',
-        value: 'react-components',
-      },
-    ],
+    choices: templates,
+  });
+
+  const features = await checkbox({
+    message: 'Select additional features:',
+    choices: additionalFeatures,
   });
 
   return {
     folderName,
     packageName,
     template,
+    features: Object.fromEntries(features.map((feature) => [feature, true])) as Record<
+      AdditionalFeatureType,
+      boolean | undefined
+    >,
   };
 };
